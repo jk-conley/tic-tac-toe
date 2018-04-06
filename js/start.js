@@ -2,15 +2,13 @@
   ON PAGE LOAD SHOW START PAGE AND BTN CLICK SHOW BOARD
 ======================================================*/
 
-!function () {
+function startGame() {
 
-  $(document).ready(function () {
+  // on page load hide everything except start div
+  $('#board').hide();
 
-    // on page load hide everything except start div
-    $('#board').hide();
-
-    // create start page
-    $('body').append(`
+  // create start page
+  $('body').append(`
       <div class="screen screen-start" id="start">
         <header>
           <h1>Tic Tac Toe</h1>
@@ -18,27 +16,28 @@
         </header>
       </div>`);
 
-    // on page load show start page
-    $('#start').show();
+  // on page load show start page
+  $('#start').show();
 
-    // when player clicks "Start game"
-    $('#start .button').on("click", function () {
+  // when player clicks "Start game"
+  $('#start .button').on("click", function () {
 
-      // hide start page
-      $('#start').hide();
+    // hide start page
+    $('#start').hide();
 
-      // make player active
-      // Randomly set whether player1 or player2 starts
-      let randPlayer = Math.floor(Math.random() * 2) + 1;
-      $(`#player${randPlayer}`).addClass('active');
+    // make player active
+    // Randomly set whether player1 or player2 starts
+    //let randPlayer = Math.floor(Math.random() * 2) + 1;
+    //$(`#player${randPlayer}`).addClass('active');
+    $(`#player1`).addClass('active');
 
-      // show board
-      $('#board').show();
+    // show board
+    $('#board').show();
 
-    });
   });
 
-}();
+}
+
 
 
 
