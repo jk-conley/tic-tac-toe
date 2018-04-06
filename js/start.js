@@ -27,6 +27,11 @@
       // hide start page
       $('#start').hide();
 
+      // make player active
+      // Randomly set whether player1 or player2 starts
+      let randPlayer = Math.floor(Math.random() * 2) + 1;
+      $(`#player${randPlayer}`).addClass('active');
+
       // show board
       $('#board').show();
 
