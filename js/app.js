@@ -19,4 +19,7 @@ $(document).ready(function () {
   // Check for Winner or Draw
   checkIfWinner();
 
+  // Check if there is a tie
+  isTie();
+
 });

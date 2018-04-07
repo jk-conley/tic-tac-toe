@@ -8,7 +8,7 @@ const startGame = () => {
   $('#board').hide();
 
   // create start page
-  $('body').append(`
+  $('body').prepend(`
       <div class="screen screen-start" id="start">
         <header>
           <h1>Tic Tac Toe</h1>
