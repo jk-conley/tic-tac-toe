@@ -2,7 +2,7 @@
   ON PAGE LOAD SHOW START PAGE AND BTN CLICK SHOW BOARD
 ======================================================*/
 
-function startGame() {
+const startGame = () => {
 
   // on page load hide everything except start div
   $('#board').hide();
@@ -20,15 +20,12 @@ function startGame() {
   $('#start').show();
 
   // when player clicks "Start game"
-  $('#start .button').on("click", function () {
+  $('#start .button').on("click", () => {
 
     // hide start page
     $('#start').hide();
 
     // make player active
-    // Randomly set whether player1 or player2 starts
-    //let randPlayer = Math.floor(Math.random() * 2) + 1;
-    //$(`#player${randPlayer}`).addClass('active');
     $(`#player1`).addClass('active');
 
     // show board
