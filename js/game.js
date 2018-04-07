@@ -19,16 +19,50 @@ $('.boxes').on('click', function () {
 $('.box').hover(
   // Handler for hover in
   function () {
-
-    if (player1.id.hasClass('active')) {
+    // player1 is active and square is empty
+    if (player1.id.hasClass('active') && !($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
       $(this).css('background-image', 'url(./img/o.svg)');
-    } else {
+    } else if (player2.id.hasClass('active') && !($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
       $(this).css('background-image', 'url(./img/x.svg)');
     }
 
   },
   // Handler for hover out
   function () {
-    $(this).css('background-image', 'none');
+    if (!($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
+      $(this).css('background-image', 'none');
+    }
 
   });
+
+// Players clicks empty square it fills with their symbol
+
+$('.box').on('click', function () {
+
+  // is square empty
+  if ($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled)) {
+    return false;
+  }
+  // is player1
+  else if (player1.id.hasClass('active')) {
+    $(this).addClass(player1.boxFilled);
+  }
+  // is player2
+  else {
+    $(this).addClass(player2.boxFilled);
+  }
+
+});
+
+// Does a player have 3 in a row
+
+$('.boxes').on('click', function () {
+
+  $('.box').each(function (index) {
+
+    // check to see if the top three win
+
+
+  });
+
+});
