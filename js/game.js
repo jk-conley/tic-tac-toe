@@ -12,3 +12,23 @@ $('.boxes').on('click', function () {
     player1.id.addClass('active');
   }
 });
+
+
+// Current Player Mouses Over
+
+$('.box').hover(
+  // Handler for hover in
+  function () {
+
+    if (player1.id.hasClass('active')) {
+      $(this).css('background-image', 'url(./img/o.svg)');
+    } else {
+      $(this).css('background-image', 'url(./img/x.svg)');
+    }
+
+  },
+  // Handler for hover out
+  function () {
+    $(this).css('background-image', 'none');
+
+  });
