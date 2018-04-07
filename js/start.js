@@ -27,7 +27,7 @@ const startGame = () => {
     console.log(name);
 
     // display player name
-    $('#board header').append(`<p class="player-name">Player: ${name}</p>`)
+    $('#board header').append(`<p class="player-name">${name}</p>`)
 
     // hide start page
     $('#start').hide();

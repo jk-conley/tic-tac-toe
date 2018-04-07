@@ -223,8 +223,11 @@ const checkIfWinner = () => {
       // hide game board
       $('#board').hide();
 
-      // display win-one page
-      createWinPage('one', 'WINNER');
+      // display win-one page with player name
+      const name = $('.player-name').text();
+      let displayName = name.charAt(0).toUpperCase() + name.slice(1);
+
+      createWinPage('one', `${displayName} Wins!`);
 
     }
 
