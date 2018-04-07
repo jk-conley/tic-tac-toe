@@ -35,7 +35,7 @@ ALTERNATE PLAYERS AFTER THEY PLACE A SYMBOL ON BOARD
 
 const alternatePalyers = () => {
 
-  $('.boxes').on('click', (e) => {
+  $('.boxes').on('click', () => {
 
     if (player1.id.hasClass('active')) {
       player1.id.removeClass('active');
@@ -106,23 +106,6 @@ const fillBox = () => {
 ====================================*/
 
 /*====================================
-CREATE WIN PAGE
-====================================*/
-
-const createWinPage = (playerNum, msg) => {
-
-  $('body').prepend(`<div class="screen screen-win screen-win-${playerNum}" id="finish">
-                      <header>
-                        <h1>Tic Tac Toe</h1>
-                        <p class="message">${msg}</p>
-                        <a href="#" class="button">New game</a>
-                      </header>
-                    </div>`
-  );
-
-}
-
-/*====================================
 CHECK BOXES TO SEE IF THERE IS A WIN
 ====================================*/
 
@@ -178,6 +161,44 @@ const isWinner = (player, boxFilled) => {
 
 }
 
+/*====================
+NEW GAME
+====================*/
+
+const newGame = () => {
+
+  // reset the board for new game
+  resetBoard();
+  // set player 1 as active
+  $('#player1').addClass('active');
+  $('#player2').removeClass('active');
+  // reset count for new game
+  count = 0;
+
+}
+
+/*====================================
+CREATE WIN PAGE
+====================================*/
+
+const createWinPage = (playerNum, msg) => {
+
+  $('body').prepend(`<div class="screen screen-win screen-win-${playerNum}" id="finish">
+                      <header>
+                        <h1>Tic Tac Toe</h1>
+                        <p class="message">${msg}</p>
+                        <a href="#" class="button">New game</a>
+                      </header>
+                    </div>`
+  );
+
+  // add listener when div is created
+  $('#finish .button').on('click', () => {
+    newGame();
+  });
+
+}
+
 /*====================================
 CHECK IF PLAYER 1 OR PLAYER 2 WINS
 ====================================*/
@@ -211,12 +232,16 @@ const checkIfWinner = () => {
 
 }
 
+/*================================================
+IF NO WINS AND ALL BOXES ARE FILLED THEN TIE GAME
+================================================*/
+
 const isTie = () => {
 
-  $('.boxes').click(function () {
+  $('.boxes').click(() => {
     $('.boxes').each((i) => {
       // if filled count increments by 1
-      if ($('.box').hasClass(player1.boxFilled)) {
+      if ($('.box').hasClass(player1.boxFilled) || $('.box').hasClass(player2.boxFilled)) {
         count++;
       }
       // when count reaches 9 and there is no winner, it is a tie
@@ -226,7 +251,7 @@ const isTie = () => {
         $('#board').hide();
 
         // display win-one page
-        createWinPage('tie', 'TIE');
+        createWinPage('tie', "It's a draw!");
 
       }
 
@@ -235,6 +260,27 @@ const isTie = () => {
 
 }
 
+/*====================
+INITIALIZE FIRST GAME
+====================*/
 
+const initialize = () => {
+  // start game
+  startGame();
 
+  // check to see whose turn it is
+  alternatePalyers();
 
+  // when player hovers show silohoutte of their symbol
+  playerHovers();
+
+  // If square is empyt fill it with proper symbol
+  fillBox();
+
+  // Check for Winner or Draw
+  checkIfWinner();
+
+  // Check if there is a tie
+  isTie();
+
+}
