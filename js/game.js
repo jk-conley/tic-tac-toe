@@ -6,8 +6,8 @@
 INSTANCES OF PLAYER
 =====================*/
 
-const player1 = new Player($('#player1'), 'box-filled-1', 'x.svg');
-const player2 = new Player($('#player2'), 'box-filled-2', 'o.svg');
+const player1 = new Player($('#player1'), 'box-filled-1', 'url(./img/o.svg)');
+const player2 = new Player($('#player2'), 'box-filled-2', 'url(./img/x.svg)');
 
 /*=====================
 BOARD VARIABLES
@@ -24,6 +24,12 @@ const box1 = $('#one'),
   box9 = $('#nine');
 
 let count = 0;
+const lis = document.querySelectorAll('.box');
+
+// assign all lis a background style of none
+for (let li of lis) {
+  li.style.backgroundImage = 'none';
+}
 
 /*=====================
 *** FUNCTIONS ***
@@ -33,18 +39,16 @@ let count = 0;
 ALTERNATE PLAYERS AFTER THEY PLACE A SYMBOL ON BOARD
 ===================================================*/
 
-const alternatePalyers = () => {
+const alternatePlayers = () => {
 
-  $('.boxes').on('click', () => {
+  if (player1.id.hasClass('active')) {
+    player1.id.removeClass('active');
+    player2.id.addClass('active');
+  } else if (player2.id.hasClass('active')) {
+    player2.id.removeClass('active');
+    player1.id.addClass('active');
+  }
 
-    if (player1.id.hasClass('active')) {
-      player1.id.removeClass('active');
-      player2.id.addClass('active');
-    } else if (player2.id.hasClass('active')) {
-      player2.id.removeClass('active');
-      player1.id.addClass('active');
-    }
-  });
 }
 
 /*==============================================================
@@ -60,10 +64,11 @@ const playerHovers = () => {
       if (player1.id.hasClass('active') && !($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
         $(this).css('background-image', 'url(./img/o.svg)');
       }
+      // HUM*** use if you want to shut off pc player and play another human
       // player2 is active and square is empty
-      else if (player2.id.hasClass('active') && !($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
-        $(this).css('background-image', 'url(./img/x.svg)');
-      }
+      // else if (player2.id.hasClass('active') && !($(this).hasClass(player1.boxFilled) || $(this).hasClass(player2.boxFilled))) {
+      //   $(this).css('background-image', 'url(./img/x.svg)');
+      // }
 
     },
     // Handler for hover out
@@ -92,10 +97,11 @@ const fillBox = () => {
     else if (player1.id.hasClass('active')) {
       $(this).addClass(player1.boxFilled);
     }
+    // HUM*** use if you want to shut off pc player and play another human
     // is player2
-    else {
-      $(this).addClass(player2.boxFilled);
-    }
+    // else {
+    //   $(this).addClass(player2.boxFilled);
+    // }
 
   });
 
@@ -205,33 +211,29 @@ CHECK IF PLAYER 1 OR PLAYER 2 WINS
 
 const checkIfWinner = () => {
 
-  $('.boxes').on('click', () => {
+  // if player two wins
+  if (isWinner('Player 2', player2.boxFilled)) {
 
-    // if player two wins
-    if (isWinner('Player 2', player2.boxFilled)) {
+    // hide game board
+    $('#board').hide();
 
-      // hide game board
-      $('#board').hide();
+    // display win-two page
+    createWinPage('two', 'WINNER');
 
-      // display win-two page
-      createWinPage('two', 'WINNER');
+  }
+  // if player 1 wins
+  else if (isWinner('Player 1', player1.boxFilled)) {
 
-    }
-    // if player 1 wins
-    else if (isWinner('Player 1', player1.boxFilled)) {
+    // hide game board
+    $('#board').hide();
 
-      // hide game board
-      $('#board').hide();
+    // display win-one page with player name
+    const name = $('.player-name').text();
+    let displayName = name.charAt(0).toUpperCase() + name.slice(1);
 
-      // display win-one page with player name
-      const name = $('.player-name').text();
-      let displayName = name.charAt(0).toUpperCase() + name.slice(1);
+    createWinPage('one', `${displayName} Wins!`);
 
-      createWinPage('one', `${displayName} Wins!`);
-
-    }
-
-  });
+  }
 
 }
 
@@ -241,25 +243,61 @@ IF NO WINS AND ALL BOXES ARE FILLED THEN TIE GAME
 
 const isTie = () => {
 
-  $('.boxes').click(() => {
-    $('.boxes').each((i) => {
-      // if filled count increments by 1
-      if ($('.box').hasClass(player1.boxFilled) || $('.box').hasClass(player2.boxFilled)) {
-        count++;
-      }
-      // when count reaches 9 and there is no winner, it is a tie
-      if (count === 9) {
+  $('.boxes').each((i) => {
+    // if filled count increments by 1
+    if ($('.box').hasClass(player1.boxFilled) || $('.box').hasClass(player2.boxFilled)) {
+      count++;
+    }
+    // when count reaches 9 and there is no winner, it is a tie
+    if (count === 9) {
 
-        // hide game board
-        $('#board').hide();
+      // hide game board
+      $('#board').hide();
 
-        // display win-one page
-        createWinPage('tie', "It's a draw!");
+      // display win-one page
+      createWinPage('tie', "It's a draw!");
 
-      }
+    }
 
-    });
   });
+
+}
+
+/*================================================
+ADDS COMPUTER PLAYER AS PLAYER 2 EASY MODE
+================================================*/
+
+// this creates a blind or easy mode pc player
+const computerPlayerTurn = () => {
+
+  // initialize temp array
+  let newEmptyBoxes = [];
+
+  // filter for empty boxes only
+  newEmptyBoxes = Array.from(lis).filter((box) => {
+    return box.style.backgroundImage === 'none';
+  });
+  console.log(newEmptyBoxes);
+
+  // used a timeout so pc play wasn't so instant
+  setTimeout(() => {
+    // select a random empty box and fill it
+    let randomNumber = Math.floor(Math.random() * newEmptyBoxes.length);
+    newEmptyBoxes[randomNumber].classList.add(player2.boxFilled);
+    newEmptyBoxes[randomNumber].style.backgroundImage = player2.symbol;
+
+    // switch player
+    alternatePlayers();
+
+    // check for Winner
+    checkIfWinner();
+
+    // check if there is a tie
+    isTie();
+
+  }, 300);
+
+  console.log(newEmptyBoxes);
 
 }
 
@@ -271,19 +309,31 @@ const initialize = () => {
   // start game
   startGame();
 
-  // check to see whose turn it is
-  alternatePalyers();
+  // set listener on boxes to make changes based on click event
+  $('.boxes').on('click', () => {
+
+    // check to see whose turn it is
+    alternatePlayers();
+
+    // check for winner
+    checkIfWinner();
+
+    // check if there is a tie
+    isTie();
+
+    // computer plays
+    computerPlayerTurn();
+
+  });
 
   // when player hovers show silohoutte of their symbol
+  // go to this function and uncomment player 2 for second Human player
+  // comment out computerPlayerTurn()
   playerHovers();
 
   // If square is empyt fill it with proper symbol
+  // go to this function and uncomment player 2 for second Human player
+  // computerPlayerTurn()
   fillBox();
-
-  // Check for Winner or Draw
-  checkIfWinner();
-
-  // Check if there is a tie
-  isTie();
 
 }
