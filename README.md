@@ -1,1 +1,3 @@
-# tic-tac-toe
+# Tic-Tac-Toe
+
+This is the fourth project in JS I did at treeehouse. The lessons dove into OOP JS, covering ES5 OOP syntax, array iteration methods, callback functions, understanding "this", and an intro to SVG. The project tasked us with building a player vs player game of tic-tac-toe. Figuring out the best way to clear the board for a new game took a few ideas before the final one was implemented. The real challenge came from the exceeds section, where player two needed to become a computer player. It was interesting having to think of how the computer might play a round of tic-tac-toe. Such things like, how can it know if a box is empty, is there a winner on the computer's turn?, etc... I had a lot of fun with it and enjoyed learning new ways of thinking about how the computer would tackle a game.   
